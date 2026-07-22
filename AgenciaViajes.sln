@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.7.11925.98
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgenciaViajes.API", "AgenciaViajes.API\AgenciaViajes.API.csproj", "{8E2DC001-0F24-4D43-AB27-B665EB5488DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgenciaViajes.Domain", "AgenciaViajes.Domain\AgenciaViajes.Domain.csproj", "{23975571-4D02-457D-BE48-F2767DA4634D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgenciaViajes.Application", "AgenciaViajes.Application\AgenciaViajes.Application.csproj", "{B9F5A2CB-BDF1-41B1-A7D5-8D760BC8A434}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgenciaViajes.Infrastructure", "AgenciaViajes.Infrastructure\AgenciaViajes.Infrastructure.csproj", "{91B8888F-D84A-4C8B-9B24-EE9E21D5B168}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Colecciones", "Colecciones", "{3F9747B5-D407-49FD-B9AD-9830AA1F5104}"
+	ProjectSection(SolutionItems) = preProject
+		AgenciaViajes-API.postman_collection = AgenciaViajes-API.postman_collection
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E2DC001-0F24-4D43-AB27-B665EB5488DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E2DC001-0F24-4D43-AB27-B665EB5488DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E2DC001-0F24-4D43-AB27-B665EB5488DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E2DC001-0F24-4D43-AB27-B665EB5488DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23975571-4D02-457D-BE48-F2767DA4634D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23975571-4D02-457D-BE48-F2767DA4634D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23975571-4D02-457D-BE48-F2767DA4634D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23975571-4D02-457D-BE48-F2767DA4634D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9F5A2CB-BDF1-41B1-A7D5-8D760BC8A434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9F5A2CB-BDF1-41B1-A7D5-8D760BC8A434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9F5A2CB-BDF1-41B1-A7D5-8D760BC8A434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9F5A2CB-BDF1-41B1-A7D5-8D760BC8A434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91B8888F-D84A-4C8B-9B24-EE9E21D5B168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91B8888F-D84A-4C8B-9B24-EE9E21D5B168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91B8888F-D84A-4C8B-9B24-EE9E21D5B168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91B8888F-D84A-4C8B-9B24-EE9E21D5B168}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B0221B4D-AB1D-4358-ADD8-DC3D020A2B39}
+	EndGlobalSection
+EndGlobal
