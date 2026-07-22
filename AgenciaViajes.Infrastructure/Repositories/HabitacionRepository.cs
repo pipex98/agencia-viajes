@@ -2,14 +2,18 @@
 using AgenciaViajes.Application.Dto.Hotel;
 using AgenciaViajes.Application.Dto.Reserva;
 using AgenciaViajes.Application.Interfaces.Repositories;
+using AgenciaViajes.Application.Interfaces.Services;
+using AgenciaViajes.Domain.Entities;
 using AgenciaViajes.Infrastructure.Data;
+using AgenciaViajes.Infrastructure.Services;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace AgenciaViajes.Infrastructure.Repositories
 {
-    public class HabitacionRepository(AppDbContext dbContext, IMapper mapper, ILogger<HabitacionRepository> _logger) : IHabitacionRepository
+    public class HabitacionRepository(AppDbContext dbContext, IMapper mapper, ILogger<HabitacionRepository> _logger, IEmailService emailService, IConfiguration configuration) : IHabitacionRepository
     {
         public async Task<List<HabitacionDto>> BuscarHabitacion(ParametrosBusquedaHabitacionDto dto)
         {
@@ -151,6 +155,92 @@ namespace AgenciaViajes.Infrastructure.Repositories
             await dbContext.SaveChangesAsync();
 
             _logger.LogInformation("Habitacion actualizada con exito con ID: {IdHabitacion}", habitacion.IdHabitacion);
+
+            return dto;
+        }
+
+        public async Task<AddReservaDto> ReservarHabitacion(AddReservaDto dto)
+        {
+            var huesped = await dbContext.Huespedes
+            .FirstOrDefaultAsync(x => x.IdHuesped == dto.IdHuesped);
+
+            _logger.LogInformation("Recuperando huesped con ID: {IdHuesped}", dto.IdHuesped);
+
+            if (huesped == null)
+            {
+                _logger.LogWarning("La reservacion de la habitacion fallo. huesped con ID: {IdHuesped}", dto.IdHuesped);
+
+                throw new KeyNotFoundException("huesped no encontrado");
+            }
+
+            var habitacion = await dbContext.Habitaciones
+                .Include(h => h.Hotel)
+                .ThenInclude(h => h.Agente)
+                .FirstOrDefaultAsync(x => x.IdHabitacion == dto.IdHabitacion);
+
+            _logger.LogInformation("Recuperando habitacion con ID: {IdHabitacion}", dto.IdHabitacion);
+
+            if (habitacion == null)
+            {
+                _logger.LogWarning("La reservacion de la habitacion fallo. habitacion con ID: {IdHabitacion} no se encontro", dto.IdHabitacion);
+
+                throw new KeyNotFoundException("habitacion no encontrada");
+            }
+
+            List<DestinatarioEmailDto> destinatarios = new List<DestinatarioEmailDto>();
+
+            destinatarios.Add(new DestinatarioEmailDto
+            {
+                Nombre = huesped.Nombres + huesped.Apellidos,
+                Email = huesped.CorreoElectronico
+            });
+
+            destinatarios.Add(new DestinatarioEmailDto
+            {
+                Nombre = habitacion.Hotel.Agente.Nombre + habitacion.Hotel.Agente.Apellido,
+                Email = habitacion.Hotel.Agente.CorreoElectronico
+            });
+
+            _logger.LogInformation($"Iniciando el envio de correo electronico");
+
+            await emailService.EnviarEmail(destinatarios, configuration["Mail:SubjectConfirmation"]!, configuration["Mail:BodyConfirmation"]!);
+
+            _logger.LogInformation($"Enviando el correo electronico");
+
+            habitacion.Desabilitar();
+
+            _logger.LogInformation("Actualizando estado de la habitacion con ID: {IdHabitacion}", dto.IdHabitacion);
+
+            dbContext.Habitaciones.Update(habitacion);
+            await dbContext.SaveChangesAsync();
+
+            _logger.LogInformation("Habitacion actualizada con exito con ID: {IdHabitacion}", dto.IdHabitacion);
+
+            var reserva = mapper.Map<Reserva>(dto);
+
+            reserva.Huesped = huesped;
+            reserva.Habitacion = habitacion;
+
+            foreach (var detalle in reserva.DetalleReservas)
+            {
+                detalle.Importe = detalle.ObtenerImporte();
+            }
+
+            reserva.Subtotal = reserva.ObtenerSubtotal();
+            reserva.Total = reserva.ObtenerTotal();
+
+            var comision = new ComisionReserva();
+
+            comision.MontoBaseReserva = reserva.Total;
+            comision.PorcentajeComision = 0.50m;
+            comision.MontoComision = comision.ObtenerMontoComision();
+
+            reserva.ComisionReservas.Add(comision);
+
+            dbContext.Reservas.Add(reserva);
+            await dbContext.SaveChangesAsync();
+
+            _logger.LogInformation("Reserva creada con exito con ID: {IdReserva}", reserva.IdReserva);
 
             return dto;
         }

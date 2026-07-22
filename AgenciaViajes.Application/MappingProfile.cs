@@ -37,6 +37,15 @@ namespace AgenciaViajes.Application
                 .ForMember(dest => dest.Contraseña, opt => opt.Ignore())
                 .ForMember(dest => dest.Telefono, opt => opt.MapFrom(src => src.Telefono));
 
+            CreateMap<AddReservaDto, Reserva>()
+                .ForMember(dest => dest.IdHuesped, opt => opt.Ignore())
+                .ForMember(dest => dest.IdHabitacion, opt => opt.Ignore())
+                .ForMember(dest => dest.FechaIngreso, opt => opt.MapFrom(src => src.FechaIngreso))
+                .ForMember(dest => dest.FechaSalida, opt => opt.MapFrom(src => src.FechaSalida))
+                .ForMember(dest => dest.ContactoEmergencia, opt => opt.MapFrom(src => src.ContactoEmergencia))
+                .ForMember(dest => dest.Subtotal, opt => opt.Ignore())
+                .ForMember(dest => dest.Total, opt => opt.Ignore());
+
             CreateMap<AddDetalleReservaDto, DetalleReserva>()
                 .ForMember(dest => dest.Concepto, opt => opt.MapFrom(src => src.Concepto))
                 .ForMember(dest => dest.Cantidad, opt => opt.MapFrom(src => src.Cantidad))

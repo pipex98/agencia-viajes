@@ -1,10 +1,12 @@
 ﻿using AgenciaViajes.Application.Commands.Hotel;
+using AgenciaViajes.Application.Commands.Reserva;
 using AgenciaViajes.Application.Dto.Hotel;
 using AgenciaViajes.Application.Dto.Reserva;
 using AgenciaViajes.Application.Queries.Habitacion;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
@@ -13,8 +15,36 @@ namespace AgenciaViajes.API.Controllers
     [ApiController]
     [Route("api/")]
     [EnableRateLimiting("fixed")]
-    public class HabitacionesController(ISender sender, ILogger<HabitacionDto> _logger, IValidator<UpsertHabitacionDto> _habitacionValidator) : ControllerBase
+    public class HabitacionesController(ISender sender, ILogger<HabitacionDto> _logger, IValidator<AddReservaDto> _reservaValidator, IValidator<UpsertHabitacionDto> _habitacionValidator) : ControllerBase
     {
+        [ProducesResponseType(typeof(AddReservaDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(IEnumerable<ValidationFailure>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [Produces("application/json")]
+        [HttpPost("habitaciones/reservar")]
+        [Authorize]
+        public async Task<IActionResult> ReservarHabitacionAsync([FromBody] AddReservaDto dto)
+        {
+            _logger.LogInformation("Iniciando la solicitud");
+
+            var validationResult = await _reservaValidator.ValidateAsync(dto);
+
+            if (!validationResult.IsValid)
+            {
+                _logger.LogInformation("Fallo en la solicitud");
+
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            var result = await sender.Send(new AddReservaCommand(dto));
+
+            _logger.LogInformation("Recuperando resultado del comando AddReservaCommand");
+
+            return Ok(result);
+        }
+
         [ProducesResponseType(typeof(List<HabitacionDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

@@ -8,6 +8,7 @@ namespace AgenciaViajes.Application.Interfaces.Repositories
         Task<List<HabitacionDto>> BuscarHabitacion(ParametrosBusquedaHabitacionDto dto);
         Task<List<ReservaDto>> ObtenerReservaciones(int id);
         Task<UpsertHabitacionDto> UpdateHabitacionAsync(int id, UpsertHabitacionDto dto);
+        Task<AddReservaDto> ReservarHabitacion(AddReservaDto dto);
         Task<bool> DesabilitarHabitacionAsync(int id);
         Task<bool> HabilitarHabitacionAsync(int id);
     }
