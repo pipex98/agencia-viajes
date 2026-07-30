@@ -14,7 +14,7 @@ Este repositorio contiene la solución a la **Prueba Técnica para Back End Deve
 
 Para garantizar el desacoplamiento, la mantenibilidad y la testeabilidad del sistema, se ha estructurado el proyecto bajo los principios de **Clean Architecture**:
 
-1.  **Domain:** Contiene las entidades de negocio (Agente, Ciudad, ComisionReserva, DetalleReserva, Genero, Habitacion, Hotel, Huesped, Reserva, TipoDocumento, TipoHabitacion ).
+1.  **Domain:** Contiene las entidades de negocio (Agente, Ciudad, ComisionReserva, DetalleReserva, Genero, Habitacion, Hotel, Huesped, Reserva, TipoDocumento, TipoHabitacion ) y sus reglas respectivas.
 2.  **Application:** Contiene los casos de uso (Commands/Queries con patrón CQRS a través de MediatR), validaciones, interfaces externas, servicios de aplicacion
 3.  **Infrastructure:** Contiene el acceso a datos (Entity Framework Core), repositorios, integraciones externas (envío de emails y generacion de tokens) y persistencia.
 4.  **API:** Capa de presentación que expone los endpoints REST controlando la autenticación y el rate limiting.
@@ -34,9 +34,9 @@ Para garantizar el desacoplamiento, la mantenibilidad y la testeabilidad del sis
                                             |             
                                             | (Persistencia SQL)             
                                             v             
-                                    +------+-----+     
-                                    | PostgreSQL |     
-                                    +------------+     
+                                     +------+-----+     
+                                     | SQL Server |     
+                                     +------------+     
 
 
 ## Requisitos previos
