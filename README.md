@@ -90,7 +90,8 @@ Uso del patron repository para centralizar las interacciones con la base de dato
 
 **Herramientas utilizadas**: GitHub Copilot.
 
-**Casos de uso**: para autocompletar codigo, finalizar features y traducir consultas SQL a entity framework .  
+**Casos de uso**: para autocompletar codigo, finalizar features, traducir consultas SQL a LINQ con entity framework y escribir
+test unitarios y de integracion.  
 
 **Verificación de calidad**: Todo código generado por IA fue revisado manualmente línea por línea.  
 
