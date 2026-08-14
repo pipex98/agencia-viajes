@@ -1,0 +1,94 @@
+﻿{
+   "CodeGenerationMode": 6,
+   "ContextClassName": "AppDbContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "IrregularWords": null,
+   "MinimumProductVersion": "2.6.1604",
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Data",
+   "PluralRules": null,
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "AgenciaViajes.Infrastructure",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 1,
+   "SingularRules": null,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[agente]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ciudad]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[comision_reservas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[detalle_reserva]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[genero]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[habitacion]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[hotel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[huesped]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[reserva]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tipo_documento]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tipo_habitacion]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false,
+   "UseTypedTvpParameters": true
+}

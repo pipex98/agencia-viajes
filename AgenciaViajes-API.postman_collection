@@ -1,0 +1,435 @@
+{
+  "info": {
+    "_postman_id": "9e918e18-6193-4b8a-90a8-053e0e0f21ca",
+    "name": "AgenciaViajes - api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "29409097"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login Huesped",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"correoElectronico\": \"gonzalo-jimenez80@gmail.com\",\r\n  \"contraseña\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7236/api/auth/login_huesped",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "auth",
+                "login_huesped"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Habitaciones",
+      "item": [
+        {
+          "name": "Reservar Habitacion",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"idHuesped\": 0,\r\n  \"idHabitacion\": 0,\r\n  \"fechaReserva\": \"\",\r\n  \"fechaIngreso\": \"\",\r\n  \"fechaSalida\": \"\",\r\n  \"contactoEmergencia\": \"\",\r\n  \"porcentajeComision\": 0.0,\r\n  \"costoTotalBase\": 0.0,\r\n  \"totalImpuestos\": 0.0,\r\n  \"montoTotal\": 0.0,\r\n  \"detalleReservas\": [\r\n    {\r\n      \"concepto\": \"\",\r\n      \"cantidad\": 0.0,\r\n      \"precioUnitario\": 0.0,\r\n      \"iva\": 0.0,\r\n      \"importe\": 0.0,\r\n      \"subtotal\": 0.0,\r\n      \"total\": 0.0\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7236/api/habitaciones/reservar",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "habitaciones",
+                "reservar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Habitaciones Disponibles",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"idHuesped\": 0,\r\n  \"idHabitacion\": 0,\r\n  \"fechaReserva\": \"\",\r\n  \"fechaIngreso\": \"\",\r\n  \"fechaSalida\": \"\",\r\n  \"contactoEmergencia\": \"\",\r\n  \"porcentajeComision\": 0.0,\r\n  \"costoTotalBase\": 0.0,\r\n  \"totalImpuestos\": 0.0,\r\n  \"montoTotal\": 0.0,\r\n  \"detalleReservas\": [\r\n    {\r\n      \"concepto\": \"\",\r\n      \"cantidad\": 0.0,\r\n      \"precioUnitario\": 0.0,\r\n      \"iva\": 0.0,\r\n      \"importe\": 0.0,\r\n      \"subtotal\": 0.0,\r\n      \"total\": 0.0\r\n    }\r\n  ]\r\n}"
+            },
+            "url": {
+              "raw": "https://localhost:7236/api/habitaciones?CiudadDestino=Medellin&FechaIngreso=2026-08-15T14:00:00&FechaSalida=2026-08-25T11:00:00&CantidadHuespedes=4",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "habitaciones"
+              ],
+              "query": [
+                {
+                  "key": "CiudadDestino",
+                  "value": "Medellin"
+                },
+                {
+                  "key": "FechaIngreso",
+                  "value": "2026-08-15T14:00:00"
+                },
+                {
+                  "key": "FechaSalida",
+                  "value": "2026-08-25T11:00:00"
+                },
+                {
+                  "key": "CantidadHuespedes",
+                  "value": "4"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Reservaciones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7236/api/habitaciones/obtener_reservaciones/:id_agente",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "habitaciones",
+                "obtener_reservaciones",
+                ":id_agente"
+              ],
+              "variable": [
+                {
+                  "key": "id_agente",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Desabilitar Habitacion",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7236/api/habitaciones/desabilitar_habitacion/:id",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "habitaciones",
+                "desabilitar_habitacion",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Habilitar Habitacion",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7236/api/habitaciones/habilitar_habitacion/:id",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "habitaciones",
+                "habilitar_habitacion",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Habitacion",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"idHotel\": 0,\r\n  \"idTipoHabitacion\": 0,\r\n  \"costoBase\": 0.0,\r\n  \"impuestos\": 0.0,\r\n  \"cantidadHuespedes\": 4,\r\n  \"ubicacion\": \"piso 5\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7236/api/habitaciones/:id",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "habitaciones",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Huespedes",
+      "item": [
+        {
+          "name": "Crear Huesped",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"idTipoDocumento\": 0,\r\n  \"idGenero\": 0,\r\n  \"nombres\": \"\",\r\n  \"apellidos\": \"\",\r\n  \"fechaNacimiento\": \"\",\r\n  \"numeroDocumento\": \"\",\r\n  \"correoElectronico\": \"\",\r\n  \"contraseña\": \"\",\r\n  \"telefono\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7236/api/huespedes",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "huespedes"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Hotel",
+      "item": [
+        {
+          "name": "Crear Hotel",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"idAgente\": 0,\r\n  \"idCiudad\": 0,\r\n  \"nombre\": \"\",\r\n  \"direccion\": \"\",\r\n  \"descripcion\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7236/api/hoteles",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "hoteles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Hotel",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"idAgente\": 0,\r\n  \"idCiudad\": 0,\r\n  \"nombre\": \"\",\r\n  \"direccion\": \"\",\r\n  \"descripcion\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7236/api/hoteles/:id",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "hoteles",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Desabilitar Hotel",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7236/api/hoteles/desabilitar_hotel/:id",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "hoteles",
+                "desabilitar_hotel",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Habilitar Hotel",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7236/api/hoteles/habilitar_hotel/:id",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "hoteles",
+                "habilitar_hotel",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Asignar Habitacion",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"idHotel\": 0,\r\n  \"idTipoHabitacion\": 0,\r\n  \"costoBase\": 0.0,\r\n  \"impuestos\": 0.0,\r\n  \"cantidadHuespedes\": 1,\r\n  \"ubicacion\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7236/api/hoteles/asignar_habitacion",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7236",
+              "path": [
+                "api",
+                "hoteles",
+                "asignar_habitacion"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
