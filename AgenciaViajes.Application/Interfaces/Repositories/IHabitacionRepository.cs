@@ -16,6 +16,10 @@ namespace AgenciaViajes.Application.Interfaces.Repositories
 
         Task<bool> HabilitarHabitacionAsync(int id);
 
+        Task<AddReservaDto> ReservarHabitacion(AddReservaDto dto);
+
         Task<Habitacion> ObtenerHabitacionPorIdAsync(int id);
+
+        Task<Habitacion> ObtenerHabitacionConDetallesPorIdAsync(int id);
     }
 }

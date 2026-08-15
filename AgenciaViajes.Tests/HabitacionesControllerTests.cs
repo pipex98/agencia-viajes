@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AgenciaViajes.Application.Dto.DetalleReserva;
+using AgenciaViajes.Application.Dto.Reserva;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;

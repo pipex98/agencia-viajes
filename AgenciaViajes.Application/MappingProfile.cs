@@ -1,5 +1,7 @@
-﻿using AgenciaViajes.Application.Dto.Habitacion;
+﻿using AgenciaViajes.Application.Dto.DetalleReserva;
+using AgenciaViajes.Application.Dto.Habitacion;
 using AgenciaViajes.Application.Dto.Hotel;
+using AgenciaViajes.Application.Dto.Reserva;
 using AgenciaViajes.Domain.Entities;
 using AutoMapper;
 
@@ -34,6 +36,18 @@ namespace AgenciaViajes.Application
                 .ForMember(dest => dest.CorreoElectronico, opt => opt.MapFrom(src => src.CorreoElectronico))
                 .ForMember(dest => dest.Contraseña, opt => opt.Ignore())
                 .ForMember(dest => dest.Telefono, opt => opt.MapFrom(src => src.Telefono));
+
+            CreateMap<AddReservaDto, Reserva>()
+                .ForMember(dest => dest.IdHuesped, opt => opt.Ignore())
+                .ForMember(dest => dest.IdHabitacion, opt => opt.Ignore())
+                .ForMember(dest => dest.FechaIngreso, opt => opt.MapFrom(src => src.FechaIngreso))
+                .ForMember(dest => dest.FechaSalida, opt => opt.MapFrom(src => src.FechaSalida))
+                .ForMember(dest => dest.ContactoEmergencia, opt => opt.MapFrom(src => src.ContactoEmergencia));
+
+            CreateMap<AddDetalleReservaDto, DetalleReserva>()
+                .ForMember(dest => dest.Concepto, opt => opt.MapFrom(src => src.Concepto))
+                .ForMember(dest => dest.Cantidad, opt => opt.MapFrom(src => src.Cantidad))
+                .ForMember(dest => dest.PrecioUnitario, opt => opt.MapFrom(src => src.PrecioUnitario));
         }
     }
 }

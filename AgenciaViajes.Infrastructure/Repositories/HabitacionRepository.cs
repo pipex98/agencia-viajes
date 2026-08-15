@@ -12,7 +12,7 @@ namespace AgenciaViajes.Infrastructure.Repositories
 {
     public class HabitacionRepository(AppDbContext dbContext, IMapper mapper,
     ILogger<HabitacionRepository> _logger, IHotelRepository hotelRepository, 
-    ITipoHabitacionRepository tipoHabitacionRepository) 
+    ITipoHabitacionRepository tipoHabitacionRepository, IHuespedRepository huespedRepository) 
     : IHabitacionRepository
     {
         public async Task<List<HabitacionDto>> BuscarHabitacion(ParametrosBusquedaHabitacionDto dto)
@@ -111,6 +111,50 @@ namespace AgenciaViajes.Infrastructure.Repositories
             return reservaciones;
         }
 
+        public async Task<AddReservaDto> ReservarHabitacion(AddReservaDto dto)
+        {
+            var huesped = await huespedRepository.ObtenerHuespedPorIdAsync(dto.IdHuesped);
+
+            var habitacion = await this.ObtenerHabitacionPorIdAsync(dto.IdHabitacion);
+
+            habitacion.Desabilitar();
+
+            _logger.LogInformation("Actualizando estado de la habitacion con ID: {IdHabitacion}", dto.IdHabitacion);
+
+            dbContext.Habitaciones.Update(habitacion);
+            await dbContext.SaveChangesAsync();
+
+            _logger.LogInformation("Habitacion actualizada con exito con ID: {IdHabitacion}", dto.IdHabitacion);
+
+            var reserva = mapper.Map<Reserva>(dto);
+
+            reserva.Huesped = huesped;
+            reserva.Habitacion = habitacion;
+
+            foreach (var detalle in reserva.DetalleReservas)
+            {
+                detalle.Importe = detalle.ObtenerImporte();
+            }
+
+            reserva.Subtotal = reserva.ObtenerSubtotal();
+            reserva.Total = reserva.ObtenerTotal();
+
+            var comision = new ComisionReserva();
+
+            comision.MontoBaseReserva = reserva.Total;
+            comision.PorcentajeComision = 0.50m;
+            comision.MontoComision = comision.ObtenerMontoComision();
+
+            reserva.ComisionReservas.Add(comision);
+
+            dbContext.Reservas.Add(reserva);
+            await dbContext.SaveChangesAsync();
+
+            _logger.LogInformation("Reserva creada con exito con ID: {IdReserva}", reserva.IdReserva);
+
+            return dto;
+        }
+
         public async Task<UpsertHabitacionDto> UpdateHabitacionAsync(int id, UpsertHabitacionDto dto)
         {
             var habitacion = await this.ObtenerHabitacionPorIdAsync(id);
@@ -156,6 +200,25 @@ namespace AgenciaViajes.Infrastructure.Repositories
         public async Task<Habitacion> ObtenerHabitacionPorIdAsync(int id)
         {
             var habitacion = await dbContext.Habitaciones.FirstOrDefaultAsync(h => h.IdHabitacion == id);
+
+            _logger.LogInformation("Recuperando habitacion con ID: {IdHabitacion}", id);
+
+            if (habitacion == null)
+            {
+                _logger.LogWarning("La recuperacion de la habitacion fallo con ID: {IdHabitacion} no se encontro", id);
+
+                throw new KeyNotFoundException("habitacion no encontrada");
+            }
+
+            return habitacion;
+        }
+
+        public async Task<Habitacion> ObtenerHabitacionConDetallesPorIdAsync(int id)
+        {
+            var habitacion = await dbContext.Habitaciones.AsNoTracking()
+            .Include(h => h.Hotel)
+            .ThenInclude(h => h.Agente)
+            .FirstOrDefaultAsync(x => x.IdHabitacion == id);
 
             _logger.LogInformation("Recuperando habitacion con ID: {IdHabitacion}", id);
 
