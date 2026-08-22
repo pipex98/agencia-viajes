@@ -15,7 +15,15 @@ namespace AgenciaViajes.Infrastructure
         {
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                 sqlServerOptionsAction: sqlOptions => {
+                     sqlOptions.EnableRetryOnFailure(
+                         maxRetryCount: 10,
+                         maxRetryDelay: TimeSpan.FromSeconds(30),
+                         errorNumbersToAdd: null
+                     );
+                 }
+            );
             });
 
             services.AddScoped<IHotelRepository, HotelRepository>();
