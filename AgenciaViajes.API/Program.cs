@@ -1,9 +1,10 @@
+using AgenciaViajes.API;
 using Scalar.AspNetCore;
 using Serilog;
-using AgenciaViajes.API;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
+    .WriteTo.OpenTelemetry()
     .WriteTo.Console()
     .WriteTo.File(
         path: "Logs/log.txt",
@@ -20,8 +21,7 @@ builder.Host.UseSerilog();
 // Add services to the container.
 
 builder.Services.AddControllers();
-
-builder.Services.AddAppDI(builder.Configuration);
+builder.Services.AddAppDI(builder.Configuration, builder.Environment, builder.Logging);
 
 var app = builder.Build();
 

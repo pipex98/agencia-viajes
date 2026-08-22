@@ -9,13 +9,17 @@ using AgenciaViajes.API.Middlewares;
 using AgenciaViajes.Application;
 using AgenciaViajes.Domain;
 using AgenciaViajes.Infrastructure;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
+using OpenTelemetry;
 
 namespace AgenciaViajes.API
 {
     public static class DependencyInjection
     {
         public static IServiceCollection AddAppDI(this IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration configuration, IHostEnvironment environment, ILoggingBuilder logging)
         {
             services.AddProblemDetails(configure =>
             {
@@ -77,6 +81,24 @@ namespace AgenciaViajes.API
                     }
                 });
             });
+
+            services.AddOpenTelemetry()
+                .ConfigureResource(resource => resource.AddService(environment.ApplicationName))
+                 .WithTracing(tracing => tracing
+                    .AddHttpClientInstrumentation()
+                    .AddAspNetCoreInstrumentation()
+                    .AddEntityFrameworkCoreInstrumentation())
+                .WithMetrics(metrics => metrics
+                    .AddHttpClientInstrumentation()
+                    .AddAspNetCoreInstrumentation());
+
+            logging.AddOpenTelemetry(options =>
+            {
+                options.IncludeFormattedMessage = true;
+                options.IncludeScopes = true;
+            });
+
+            services.AddOpenTelemetry().UseOtlpExporter();
 
             services.AddApplicationDI()
                 .AddInfrastructureDI(configuration)
