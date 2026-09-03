@@ -2,21 +2,38 @@
 
 Este repositorio contiene la solución a la **Prueba Técnica para Back End Developer** de **UltraGroup**. para una plataforma moderna de alojamiento, escalable y mantenible para la gestión de catálogos de hoteles, habitaciones y reservas de una agencia de viajes.
 
-## Stack Tecnologico y Arquitectura
+## Stack Tecnologico
 
 - **Lenguaje y Framework:** C# con **.NET 10**.
-- **Base de Datos:** **SQL Server** (Persistencia Relacional).
-- **Justificación:** Se eligió un motor relacional debido a la naturaleza transaccional del dominio (evitar sobreventas de habitaciones mediante el uso de transacciones ACID) y la fuerte relación entre las entidades de negocio. 
-- **Trade-offs:** Sacrificamos la flexibilidad de esquema de una NoSQL en favor de la consistencia e integridad de los datos. En un escenario de alta concurrencia de lecturas globales, se podría migrar el catálogo de búsqueda a un motor de búsqueda como Elasticsearch o implementar Redis como capa de caché.
+
+- **Base de Datos:** SQL Server.
+
+- **Contenedor:** Docker.
+
+- **Testing:** XUnit.
+
+- **Autenticacion:** JWT.
+
 - **Documentación de API:** OpenAPI / Scalar.
 
-## Arquitectura de la Solucion (Clean Architecture)
+## Justificacion 
+
+Se eligió un motor relacional debido a la naturaleza transaccional del dominio (evitar sobreventas de habitaciones mediante el uso de transacciones ACID) y la fuerte relación entre las entidades de negocio.
+
+## Trade-offs
+
+Sacrificamos la flexibilidad de esquema de una NoSQL en favor de la consistencia e integridad de los datos. En un escenario de alta concurrencia de lecturas globales, se podría migrar el catálogo de búsqueda a un motor de búsqueda como Elasticsearch o implementar Redis como capa de caché.
+
+## Arquitectura de la Solucion
 
 Para garantizar el desacoplamiento, la mantenibilidad y la testeabilidad del sistema, se ha estructurado el proyecto bajo los principios de **Clean Architecture**:
 
 1.  **Domain:** Contiene las entidades de negocio (Agente, Ciudad, ComisionReserva, DetalleReserva, Genero, Habitacion, Hotel, Huesped, Reserva, TipoDocumento, TipoHabitacion ) y sus reglas respectivas.
-2.  **Application:** Contiene los casos de uso (Commands/Queries con patrón CQRS a través de MediatR), validaciones, interfaces externas, servicios de aplicacion
+
+2.  **Application:** Contiene los casos de uso (Commands/Queries con patrón CQRS a través de MediatR), validaciones, interfaces externas, servicios de aplicacion.
+
 3.  **Infrastructure:** Contiene el acceso a datos (Entity Framework Core), repositorios, integraciones externas (envío de emails y generacion de tokens) y persistencia.
+
 4.  **API:** Capa de presentación que expone los endpoints REST controlando la autenticación y el rate limiting.
 
 ## Diagrama de Arquitectura (Modelo C4)
@@ -43,22 +60,35 @@ Para garantizar el desacoplamiento, la mantenibilidad y la testeabilidad del sis
 
 * .NET 10 SDK (https://dotnet.microsoft.com/download).
 
+* WSL (https://learn.microsoft.com/es-es/windows/wsl/install)
+
+* Docker Desktop (https://docs.docker.com/get-started/get-docker/)
+
 ## Instrucciones de Ejecución Local
 
-**1.** Clona el repositorio:
-   git clone https://github.com/pipex98/agencia-viajes
+**1.** Clonar el repositorio: git clone https://github.com/pipex98/agencia-viajes
 
-**2.** Ejecuta el script agencia-viajes.sql
+**2.** Configurar las variables de entorno
 
-**3.** Configurar la cadena de conexion
+**3** Configurar los secretos de usuarios
 
-**4** Configurar los secretos de usuarios
+**4.** Ejecutar Docker Compose
 
-**4.** cd AgenciaViajes
+**5.** Conectarse al contenedor agenciaviajes.database con las opciones:
 
-**5.** dotnet run --project AgenciaViajes.API
+* **Server name:** localhost,1433.
+* **Authentication:** SQL Server Authentication.
+* **Login:** ${DB_USER}.
+* **Password:** ${DB_PASSWORD}.
 
-La API estará disponible en https://localhost:7001 (o el puerto configurado) y la interfaz de Scalar en https://localhost:7236/scalar/v1.  
+**6.** Ejecutar el script agencia-viajes.sql
+
+<pre>
+La API con la interfaz de Scalar estará disponible en https://localhost:7236/scalar/v1 
+
+.NET Aspire Dashboard estará disponible en http://localhost:18888/structuredlogs
+</pre>
+
                         
 ##  Retos Técnicos Abordados y Soluciones
 
@@ -78,15 +108,61 @@ La API estará disponible en https://localhost:7001 (o el puerto configurado) y 
 
 7. **logging de eventos de seguridad:** para manejar una trazabilidad de lo que va sucediento dentro del sistema.
 
-### Test Driven Development 
+## Test Driven Development 
 
 Uso del patron red-green-refactor para escribir pruebas escalables, mantenibles y faciles de entender, en este caso no se implemento refactorizacion porque de entrada el codigo se escribio optimizado.
 
-### Clean Code y Patrones de diseño 
+## Telemetría y Observabilidad
+
+El sistema está instrumentado utilizando **OpenTelemetry** integrando **.NET Aspire Dashboard** permitiendo monitoreo en tiempo real, rastreo distribuido y diagnóstico de rendimiento.
+
+### 1. Capacidades Instrumentadas
+
+* **Logs Estructurados:** Centralización de logs enriquecidos con `TraceId` para trazabilidad end-to-end de errores e incidentes.
+
+* **Trazas Distribuidas (Traces):** Rastrear el recorrido completo de la peticion http.
+
+* **Métricas (Metrics):** Supervisar el rendimiento, el estado y el comportamiento en tiempo real mediante mediciones numéricas recopiladas a lo largo del tiempo.
+
+### ¿Como detectar cuellos de botella en produccion?
+
+Cuando se reporte lentitud o degradación en el sistema, se debe seguir este flujo de diagnóstico dentro del **.NET Aspire Dashboard**: 
+
+### Paso 1: Confirmar el Impacto (Metrics)
+
+1. Ir a la sección **Metrics** y seleccionar el servicio afectado.
+
+2. Analizar el gráfico http.server.request.duration.
+
+3. **Foco:** Verificar si los percentiles **P95 o P99** superan el umbral de tolerancia (ej. > 1.5s).
+
+4. Revisar las métricas del **Thread Pool**: un incremento súbito de hilos activos con baja CPU suele indicar bloqueos síncronos (*Thread Starvation*).
+
+### Paso 2: Rastrear la Ruta Lenta (Traces)
+
+1. Entrar a la sección **Traces** y ordenar la tabla por **Duration** (de mayor a menor).
+
+2. Hacer clic en la petición con mayor latencia para abrir el diagrama de cascada (*Waterfall*).
+
+3. **Foco:** Identificar la barra horizontal más larga para aislar la causa raíz: 
+
+   - **Base de Datos:** Spans de tipo db.system prolongados o repetitivos (indican consultas N+1 o falta de índices).
+
+   - **APIs Externas:** Spans de http.client que consumen el grueso del tiempo total de la transacción.
+   
+### Paso 3: Correlacionar y Extraer Evidencia (Logs)
+
+1. Hacer clic en el span lento y copiar el **Trace ID**.
+
+2. ir a **Structured Logs** y filtrar por ese Trace ID.
+
+3. Revisar la secuencia exacta de logs y excepciones (TaskCanceledException, timeouts, etc.) asociados cronológicamente a ese fallo.
+
+## Clean Code y Patrones de diseño 
 
 Uso del patron repository para centralizar las interacciones con la base de datos y poder cambiar el motor sin afectar el resto de las capas. uso del patron mediator para centralizar la comunicacion compleja entre multiples objetos a través de un único objeto mediator. Uso del patron CQRS para separar las operaciones de escritura (comandos) de las operaciones de lectura (consultas)
 
-### Uso de IA en el Desarrollo
+## Uso de IA en el Desarrollo
 
 **Herramientas utilizadas**: GitHub Copilot.
 
@@ -106,4 +182,3 @@ En la raíz del proyecto encontrarás el archivo AgenciaViajes-API.postman_colle
 **Flujo del Agente:** Crear hotel, Modificar hotel, Asignar habitación, Modificar precios o informacion de la habitacion, Listar Reservas, Habilitar Hotel, Desabilitar Hotel, Habilitar Habitacion, Desabilitar Habitacion,  
 
 **Flujo del Viajero:** Registrarse, Autenticarse, Buscar habitaciones disponibles, Crear Reserva.  
-
