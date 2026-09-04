@@ -129,21 +129,41 @@ namespace AgenciaViajes.Infrastructure.Repositories
             var reserva = mapper.Map<Reserva>(dto);
 
             reserva.Huesped = huesped;
+
+            _logger.LogInformation("Asignando huesped a la reserva con ID: {IdHuesped}", dto.IdHuesped);
+
             reserva.Habitacion = habitacion;
+
+            _logger.LogInformation("Asignando habitacion a la reserva con ID: {IdHabitacion}", dto.IdHabitacion);
+
+            reserva.Subtotal = reserva.ObtenerSubtotal();
+
+            _logger.LogInformation("Calculando el subtotal de la reserva con ID: {IdReserva}", reserva.IdReserva);
+
+            reserva.Total = reserva.ObtenerTotal();
+
+            _logger.LogInformation("Calculando el total de la reserva con ID: {IdReserva}", reserva.IdReserva);
 
             foreach (var detalle in reserva.DetalleReservas)
             {
                 detalle.Importe = detalle.ObtenerImporte();
-            }
 
-            reserva.Subtotal = reserva.ObtenerSubtotal();
-            reserva.Total = reserva.ObtenerTotal();
+                _logger.LogInformation("Calculando el importe del detalle de la reserva con ID: {IdReserva}", reserva.IdReserva);
+            }
 
             var comision = new ComisionReserva();
 
             comision.MontoBaseReserva = reserva.Total;
+
+            _logger.LogInformation("Asignando monto base a la reserva con ID: {IdReserva}", reserva.IdReserva);
+
             comision.PorcentajeComision = 0.50m;
+
+            _logger.LogInformation("Asignando porcentaje de comision a la reserva con ID: {IdReserva}", reserva.IdReserva);
+
             comision.MontoComision = comision.ObtenerMontoComision();
+
+            _logger.LogInformation("Calculando monto de comision para la reserva con ID: {IdReserva}", reserva.IdReserva);
 
             reserva.ComisionReservas.Add(comision);
 
