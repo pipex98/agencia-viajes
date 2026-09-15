@@ -2,8 +2,8 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using AgenciaViajes.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace AgenciaViajes.Infrastructure.Data;
 
@@ -40,7 +40,7 @@ public partial class AppDbContext : DbContext
     {
         modelBuilder.Entity<Agente>(entity =>
         {
-            entity.HasKey(e => e.IdAgente).HasName("PK__agente__178FE9933212471A");
+            entity.HasKey(e => e.IdAgente).HasName("PK__agente__178FE99356C1E7DB");
 
             entity.ToTable("agente");
 
@@ -93,7 +93,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Ciudad>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ciudad__3213E83F8A589D94");
+            entity.HasKey(e => e.Id).HasName("PK__ciudad__3213E83F20026D07");
 
             entity.ToTable("ciudad");
 
@@ -113,6 +113,7 @@ public partial class AppDbContext : DbContext
 
             entity.Property(e => e.IdComision).HasColumnName("id_comision");
             entity.Property(e => e.Estado)
+                .IsRequired()
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasDefaultValue("Pendiente", "DF_ComisionReservas_Estado")
@@ -129,7 +130,8 @@ public partial class AppDbContext : DbContext
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("monto_comision");
             entity.Property(e => e.PorcentajeComision)
-                .HasColumnType("decimal(2, 2)")
+                .HasDefaultValue(50.00m, "DF_ComisionReservas_PorcentajeComision")
+                .HasColumnType("decimal(5, 2)")
                 .HasColumnName("porcentaje_comision");
 
             entity.HasOne(d => d.Reserva).WithMany(p => p.ComisionReservas)
@@ -152,13 +154,13 @@ public partial class AppDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("concepto");
             entity.Property(e => e.IdReserva).HasColumnName("id_reserva");
-            entity.Property(e => e.PrecioUnitario)
-                .HasColumnType("decimal(10, 2)")
-                .HasColumnName("precio_unitario");
             entity.Property(e => e.Importe)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("importe");
-            
+            entity.Property(e => e.PrecioUnitario)
+                .HasColumnType("decimal(10, 0)")
+                .HasColumnName("precio_unitario");
+
             entity.HasOne(d => d.Reserva).WithMany(p => p.DetalleReservas)
                 .HasForeignKey(d => d.IdReserva)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -322,16 +324,6 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("contacto_emergencia");
-            entity.Property(e => e.Iva)
-                .HasDefaultValueSql("('19.00')", "DF_Reserva_Iva")
-                .HasColumnType("decimal(10, 2)")
-                .HasColumnName("iva");
-            entity.Property(e => e.Subtotal)
-                .HasColumnType("decimal(10, 2)")
-                .HasColumnName("subtotal");
-            entity.Property(e => e.Total)
-                .HasColumnType("decimal(10, 2)")
-                .HasColumnName("total");
             entity.Property(e => e.Estado)
                 .IsRequired()
                 .HasMaxLength(20)
@@ -350,6 +342,16 @@ public partial class AppDbContext : DbContext
                 .HasColumnName("fecha_salida");
             entity.Property(e => e.IdHabitacion).HasColumnName("id_habitacion");
             entity.Property(e => e.IdHuesped).HasColumnName("id_huesped");
+            entity.Property(e => e.Iva)
+                .HasDefaultValue(19.00m, "DF_Reserva_Iva")
+                .HasColumnType("decimal(4, 2)")
+                .HasColumnName("iva");
+            entity.Property(e => e.Subtotal)
+                .HasColumnType("decimal(10, 2)")
+                .HasColumnName("subtotal");
+            entity.Property(e => e.Total)
+                .HasColumnType("decimal(10, 2)")
+                .HasColumnName("total");
 
             entity.HasOne(d => d.Habitacion).WithMany(p => p.Reservas)
                 .HasForeignKey(d => d.IdHabitacion)
