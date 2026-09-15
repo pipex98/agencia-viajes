@@ -10,7 +10,7 @@ services:
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://agenciaviajes.dashboard:18889
       - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
-      - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=${DB_DATABASE};User Id=${DB_USER};${DB_PASSWORD};TrustServerCertificate=true; 
+      - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=${DB_DATABASE};User Id=${DB_USER};Password=${DB_PASSWORD};TrustServerCertificate=true; 
     depends_on:
       db:
         condition: service_healthy
