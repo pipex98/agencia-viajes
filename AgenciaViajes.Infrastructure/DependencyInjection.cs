@@ -6,6 +6,7 @@ using AgenciaViajes.Application.Interfaces.Services;
 using AgenciaViajes.Infrastructure.Data;
 using AgenciaViajes.Infrastructure.Repositories;
 using AgenciaViajes.Infrastructure.Services;
+using AgenciaViajes.Application.Interfaces;
 
 namespace AgenciaViajes.Infrastructure
 {
@@ -37,6 +38,8 @@ namespace AgenciaViajes.Infrastructure
 
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ITokenService, TokenService>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }
