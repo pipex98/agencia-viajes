@@ -7,24 +7,49 @@ namespace AgenciaViajes.Domain.Entities;
 
 public partial class ComisionReserva
 {
-    public int IdComision { get; set; }
+    public int IdComision { get; private set; }
 
-    public int IdReserva { get; set; }
+    public int IdReserva { get; private set; }
 
-    public decimal MontoBaseReserva { get; set; }
+    public decimal MontoBaseReserva { get; private set; }
 
-    public decimal PorcentajeComision { get; set; }
+    public decimal PorcentajeComision { get; private set; }
 
-    public decimal MontoComision { get; set; }
+    public decimal MontoComision { get; private set; }
 
-    public DateTime? FechaCalculo { get; set; }
+    public DateTime? FechaCalculo { get; private set; }
 
-    public string Estado { get; set; }
+    public string Estado { get; private set; }
 
-    public virtual Reserva Reserva { get; set; }
+    public virtual Reserva Reserva { get; private set; }
 
-    public decimal ObtenerMontoComision()
+    public ComisionReserva() {}
+
+    private ComisionReserva(decimal montoBaseReserva)
     {
-        return MontoBaseReserva * PorcentajeComision;
+        MontoBaseReserva = montoBaseReserva;
+        MontoComision = CalcularComision();
+    }
+
+    public static ComisionReserva Create(decimal montoBaseReserva)
+    {
+        var comisionReserva = new ComisionReserva(montoBaseReserva);
+
+        comisionReserva.Validar(montoBaseReserva);
+
+        return comisionReserva;
+    }
+
+    public void Validar(decimal montoBaseReserva)
+    {
+        if (montoBaseReserva <= 0)
+        {
+            throw new ArgumentException("El monto base de la reserva debe ser mayor que cero.");
+        }
+    }
+
+    public decimal CalcularComision()
+    {
+        return MontoBaseReserva * 0.50m;
     }
 }

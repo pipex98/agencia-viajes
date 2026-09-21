@@ -7,27 +7,65 @@ namespace AgenciaViajes.Domain.Entities;
 
 public partial class Habitacion
 {
-    public int IdHabitacion { get; set; }
+    public int IdHabitacion { get; private set; }
 
-    public int IdHotel { get; set; }
+    public int IdHotel { get; private set; }
 
-    public int IdTipoHabitacion { get; set; }
+    public int IdTipoHabitacion { get; private set; }
 
-    public decimal CostoBase { get; set; }
+    public decimal CostoBase { get; private set; }
 
-    public decimal Impuestos { get; set; }
+    public decimal Impuestos { get; private set; }
 
-    public int CantidadHuespedes { get; set; }
+    public int CantidadHuespedes { get; private set; }
 
-    public string Ubicacion { get; set; }
+    public string Ubicacion { get; private set; }
 
-    public string Estado { get; set; }
+    public string Estado { get; private set; }
 
-    public virtual Hotel Hotel { get; set; }
+    public virtual Hotel Hotel { get; private set; }
 
-    public virtual TipoHabitacion TipoHabitacion { get; set; }
+    public virtual TipoHabitacion TipoHabitacion { get; private set; }
 
-    public virtual ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();
+    public virtual ICollection<Reserva> Reservas { get; private set; } = new List<Reserva>();
+
+    public Habitacion() {}
+
+    private Habitacion(
+        Hotel hotel,
+        TipoHabitacion tipoHabitacion,
+        decimal costoBase,
+        decimal impuestos,
+        int cantidadHuespedes,
+        string ubicacion)
+    {
+        Hotel = hotel;
+        TipoHabitacion = tipoHabitacion;
+        CostoBase = costoBase;
+        Impuestos = impuestos;
+        CantidadHuespedes = cantidadHuespedes;
+        Ubicacion = ubicacion;
+    }
+
+    public static Habitacion Crear(
+        Hotel hotel,
+        TipoHabitacion tipoHabitacion,
+        decimal costoBase,
+        decimal impuestos,
+        int cantidadHuespedes,
+        string ubicacion)
+    {
+        var habitacion = new Habitacion(
+            hotel,
+            tipoHabitacion,
+            costoBase,
+            impuestos,
+            cantidadHuespedes,
+            ubicacion
+        );
+
+        return habitacion;
+    }
 
     public void Habilitar()
     {

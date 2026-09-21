@@ -7,43 +7,86 @@ namespace AgenciaViajes.Domain.Entities;
 
 public partial class Reserva
 {
-    public int IdReserva { get; set; }
+    public int IdReserva { get; private set; }
 
-    public int IdHuesped { get; set; }
+    public int IdHuesped { get; private set; }
 
-    public int IdHabitacion { get; set; }
+    public int IdHabitacion { get; private set; }
 
-    public DateTime FechaReserva { get; set; }
+    public DateTime FechaReserva { get; private set; }
 
-    public DateTime FechaIngreso { get; set; }
+    public DateTime FechaIngreso { get; private set; }
 
-    public DateTime FechaSalida { get; set; }
+    public DateTime FechaSalida { get; private set; }
 
-    public string ContactoEmergencia { get; set; }
+    public string ContactoEmergencia { get; private set; }
 
-    public decimal Subtotal { get; set; }
+    public decimal Subtotal { get; private set; }
 
-    public decimal Iva { get; set; }
+    public decimal Iva { get; private set; }
 
-    public decimal Total { get; set; }
+    public decimal Total { get; private set; }
 
-    public string Estado { get; set; }
+    public string Estado { get; private set; }
 
-    public virtual ICollection<ComisionReserva> ComisionReservas { get; set; } = new List<ComisionReserva>();
+    public virtual ICollection<ComisionReserva> ComisionReservas { get; private set; } = new List<ComisionReserva>();
 
-    public virtual ICollection<DetalleReserva> DetalleReservas { get; set; } = new List<DetalleReserva>();
+    public virtual ICollection<DetalleReserva> DetalleReservas { get; private set; } = new List<DetalleReserva>();
 
-    public virtual Habitacion Habitacion { get; set; }
+    public virtual Habitacion Habitacion { get; private set; }
 
-    public virtual Huesped Huesped { get; set; }
+    public virtual Huesped Huesped { get; private set; }
 
-    public decimal ObtenerSubtotal()
+    public Reserva(){}
+
+    private Reserva(
+        Habitacion habitacion,
+        Huesped huesped,
+        DateTime fechaIngreso,
+        DateTime fechaSalida,
+        string contactoEmergencia)
     {
-        return DetalleReservas.Sum(x => x.Importe);
+        Habitacion = habitacion;
+        Huesped = huesped;
+        FechaIngreso = fechaIngreso;
+        FechaSalida = fechaSalida;
+        ContactoEmergencia = contactoEmergencia;
     }
 
-    public decimal ObtenerTotal()
+    public static Reserva Crear(
+        Habitacion habitacion,
+        Huesped huesped,
+        DateTime fechaIngreso,
+        DateTime fechaSalida,
+        string contactoEmergencia)
     {
-        return DetalleReservas.Sum(x => x.Importe + ( x.Importe * 0.19m ));
+        var reserva = new Reserva(
+            habitacion, 
+            huesped, 
+            fechaIngreso, 
+            fechaSalida, 
+            contactoEmergencia);
+
+        return reserva;
+    }
+
+    public void AgregarDetalle(DetalleReserva detalleReserva)
+    {
+        DetalleReservas.Add(detalleReserva);
+    }
+
+    public void AgregarComision(ComisionReserva comisionReserva)
+    {
+        ComisionReservas.Add(comisionReserva);
+    }
+
+    public void CalcularSubtotal()
+    {
+        Subtotal = DetalleReservas.Sum(x => x.Importe);
+    }
+
+    public void CalcularTotal()
+    {
+        Total = Math.Round(Subtotal + Subtotal * Iva, 2);
     }
 }

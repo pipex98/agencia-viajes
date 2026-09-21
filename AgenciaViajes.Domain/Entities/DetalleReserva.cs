@@ -21,7 +21,20 @@ public partial class DetalleReserva
 
     public virtual Reserva Reserva { get; set; }
 
-    public decimal ObtenerImporte()
+    public DetalleReserva(){}
+
+    private DetalleReserva(
+        string concepto,
+        int cantidad,
+        decimal precioUnitario)
+    {
+        Concepto = concepto;
+        Cantidad = cantidad;
+        PrecioUnitario = precioUnitario;
+        Importe = CalcularImporte();
+    }
+
+    public decimal CalcularImporte()
     {
         return Cantidad * PrecioUnitario;
     }

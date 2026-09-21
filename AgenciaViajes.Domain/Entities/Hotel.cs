@@ -7,25 +7,53 @@ namespace AgenciaViajes.Domain.Entities;
 
 public partial class Hotel
 {
-    public int IdHotel { get; set; }
+    public int IdHotel { get; private set; }
 
-    public int IdAgente { get; set; }
+    public int IdAgente { get; private set; }
 
-    public int IdCiudad { get; set; }
+    public int IdCiudad { get; private set; }
 
-    public string Nombre { get; set; }
+    public string Nombre { get; private set; }
 
-    public string Direccion { get; set; }
+    public string Direccion { get; private set; }
 
-    public string Descripcion { get; set; }
+    public string Descripcion { get; private set; }
 
-    public string Estado { get; set; }
+    public string Estado { get; private set; }
 
-    public virtual ICollection<Habitacion> Habitaciones { get; set; } = new List<Habitacion>();
+    public virtual ICollection<Habitacion> Habitaciones { get; private set; } = new List<Habitacion>();
 
-    public virtual Agente Agente { get; set; }
+    public virtual Agente Agente { get; private set; }
 
-    public virtual Ciudad Ciudad { get; set; }
+    public virtual Ciudad Ciudad { get; private set; }
+
+    public Hotel(){}
+
+    private Hotel(
+        Agente agente,
+        Ciudad ciudad,
+        string nombre,
+        string direccion,
+        string descripcion)
+    {
+        Agente = agente;
+        Ciudad = ciudad;
+        Nombre = nombre;
+        Direccion = direccion;
+        Descripcion = descripcion;
+    }
+
+    public static Hotel Crear(
+        Agente agente,
+        Ciudad ciudad,
+        string nombre,
+        string direccion,
+        string descripcion)
+    {
+        var hotel = new Hotel(agente, ciudad, nombre, direccion, descripcion);
+
+        return hotel;
+    }
 
     public void Habilitar()
     {

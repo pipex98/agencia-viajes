@@ -7,29 +7,79 @@ namespace AgenciaViajes.Domain.Entities;
 
 public partial class Huesped
 {
-    public int IdHuesped { get; set; }
+    public int IdHuesped { get; private set; }
 
-    public int IdTipoDocumento { get; set; }
+    public int IdTipoDocumento { get; private set; }
 
-    public int IdGenero { get; set; }
+    public int IdGenero { get; private set; }
 
-    public string Nombres { get; set; }
+    public string Nombres { get; private set; }
 
-    public string Apellidos { get; set; }
+    public string Apellidos { get; private set; }
 
-    public DateOnly FechaNacimiento { get; set; }
+    public DateOnly FechaNacimiento { get; private set; }
 
-    public string NumeroDocumento { get; set; }
+    public string NumeroDocumento { get; private set; }
 
-    public string CorreoElectronico { get; set; }
+    public string CorreoElectronico { get; private set; }
 
-    public string Contraseña { get; set; }
+    public string Contraseña { get; private set; }
 
-    public string Telefono { get; set; }
+    public string Telefono { get; private set; }
 
-    public virtual Genero Genero { get; set; }
+    public virtual Genero Genero { get; private set; }
 
-    public virtual TipoDocumento TipoDocumento { get; set; }
+    public virtual TipoDocumento TipoDocumento { get; private set; }
 
-    public virtual ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();
+    public virtual ICollection<Reserva> Reservas { get; private set; } = new List<Reserva>();
+
+    public Huesped() {}
+
+    private Huesped(
+        Genero genero,
+        TipoDocumento tipoDocumento,
+        string nombres,
+        string apellidos,
+        DateOnly fechaNacimiento,
+        string numeroDocumento,
+        string correoElectronico,
+        string contraseña,
+        string telefono)
+    {
+        Genero = genero;
+        TipoDocumento = tipoDocumento;
+        Nombres = nombres;
+        Apellidos = apellidos;
+        FechaNacimiento = fechaNacimiento;
+        NumeroDocumento = numeroDocumento;
+        CorreoElectronico = correoElectronico;
+        Contraseña = contraseña;
+        Telefono = telefono;
+    }
+
+    public static Huesped Crear(
+        Genero genero,
+        TipoDocumento tipoDocumento,
+        string nombres,
+        string apellidos,
+        DateOnly fechaNacimiento,
+        string numeroDocumento,
+        string correoElectronico,
+        string contraseña,
+        string telefono)
+    {
+        var huesped = new Huesped(
+            genero,
+            tipoDocumento,
+            nombres,
+            apellidos,
+            fechaNacimiento,
+            numeroDocumento,
+            correoElectronico,
+            contraseña,
+            telefono
+        );
+
+        return huesped;
+    }
 }
