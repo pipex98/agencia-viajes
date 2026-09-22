@@ -67,6 +67,22 @@ public partial class Habitacion
         return habitacion;
     }
 
+    public void Actualizar(
+        Hotel hotel,
+        TipoHabitacion tipoHabitacion,
+        decimal costoBase,
+        decimal impuestos,
+        int cantidadHuespedes,
+        string ubicacion)
+    {
+        Hotel = hotel;
+        TipoHabitacion = tipoHabitacion;
+        CostoBase = costoBase;
+        Impuestos = impuestos;
+        CantidadHuespedes = cantidadHuespedes;
+        Ubicacion = ubicacion;
+    }
+
     public void Habilitar()
     {
         Estado = "Habilitada";

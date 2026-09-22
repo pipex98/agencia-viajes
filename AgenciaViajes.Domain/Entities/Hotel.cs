@@ -55,6 +55,20 @@ public partial class Hotel
         return hotel;
     }
 
+    public void Actualizar(
+        Agente agente,
+        Ciudad ciudad,
+        string nombre,
+        string direccion,
+        string descripcion)
+    {
+        Agente = agente;
+        Ciudad = ciudad;
+        Nombre = nombre;
+        Direccion = direccion;
+        Descripcion = descripcion;
+    }
+
     public void Habilitar()
     {
         Estado = "habilitado";

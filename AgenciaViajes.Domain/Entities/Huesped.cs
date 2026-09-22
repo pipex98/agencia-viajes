@@ -82,4 +82,26 @@ public partial class Huesped
 
         return huesped;
     }
+
+    public void Actualizar(
+        Genero genero,
+        TipoDocumento tipoDocumento,
+        string nombres,
+        string apellidos,
+        DateOnly fechaNacimiento,
+        string numeroDocumento,
+        string correoElectronico,
+        string contraseña,
+        string telefono)
+    {
+        Genero = genero;
+        TipoDocumento = tipoDocumento;
+        Nombres = nombres;
+        Apellidos = apellidos;
+        FechaNacimiento = fechaNacimiento;
+        NumeroDocumento = numeroDocumento;
+        CorreoElectronico = correoElectronico;
+        Contraseña = contraseña;
+        Telefono = telefono;
+    }
 }
