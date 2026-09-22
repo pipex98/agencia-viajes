@@ -6,20 +6,15 @@ namespace AgenciaViajes.Application.Interfaces.Repositories
 {
     public interface IHabitacionRepository
     {
-        Task<List<HabitacionDto>> BuscarHabitacion(ParametrosBusquedaHabitacionDto dto);
-
-        Task<List<ReservaDto>> ObtenerReservaciones(int id);
-
-        Task<UpsertHabitacionDto> UpdateHabitacionAsync(int id, UpsertHabitacionDto dto);
-
-        Task<bool> DesabilitarHabitacionAsync(int id);
-
-        Task<bool> HabilitarHabitacionAsync(int id);
-
-        Task<AddReservaDto> ReservarHabitacion(AddReservaDto dto);
+        Task<List<Habitacion>> ObtenerHabitacionesDisponibles(ParametrosBusquedaHabitacionDto dto);
 
         Task<Habitacion> ObtenerHabitacionPorIdAsync(int id);
 
         Task<Habitacion> ObtenerHabitacionConDetallesPorIdAsync(int id);
+
+        void Actualizar(Habitacion habitacion);
+
+        void Crear(Habitacion habitacion);
+
     }
 }

@@ -5,16 +5,11 @@ namespace AgenciaViajes.Application.Interfaces.Repositories
 {
     public interface IHotelRepository
     {
-        Task<UpsertHotelDto> AddHotelAsync(UpsertHotelDto dto);
-
-        Task<UpsertHotelDto> UpdateHotelAsync(int id, UpsertHotelDto dto);
-
-        Task<bool> DesabilitarHotelAsync(int id);
-
-        Task<bool> HabilitarHotelAsync(int id);
-
-        Task<UpsertHabitacionDto> AssignHabitacionAsync(UpsertHabitacionDto dto);
-
         Task<Hotel> ObtenerHotelPorId(int id);
+
+        void Crear(Hotel hotel);
+
+        void Actualizar(Hotel hotel);
+
     }
 }
