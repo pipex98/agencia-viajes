@@ -35,6 +35,7 @@ namespace AgenciaViajes.Infrastructure
             services.AddScoped<ITipoDocumentoRepository, TipoDocumentoRepository>();
             services.AddScoped<IGeneroRepository, GeneroRepository>();
             services.AddScoped<ICiudadRepository, CiudadRepository>();
+            services.AddScoped<IReservaRepository, ReservaRepository>();
 
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ITokenService, TokenService>();
