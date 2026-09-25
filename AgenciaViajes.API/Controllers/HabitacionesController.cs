@@ -1,8 +1,9 @@
-﻿using AgenciaViajes.Application.Commands.Hotel;
-using AgenciaViajes.Application.Commands.Reserva;
+﻿using AgenciaViajes.Application.Commands.Habitaciones;
+using AgenciaViajes.Application.Commands.Reservas;
 using AgenciaViajes.Application.Dto.Hotel;
 using AgenciaViajes.Application.Dto.Reserva;
-using AgenciaViajes.Application.Queries.Habitacion;
+using AgenciaViajes.Application.Queries.Habitaciones;
+using AgenciaViajes.Application.Queries.Reservas;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
@@ -16,7 +17,7 @@ namespace AgenciaViajes.API.Controllers
     [Route("api/")]
     [EnableRateLimiting("fixed")]
     public class HabitacionesController(ISender sender, ILogger<HabitacionDto> _logger,
-    IValidator<AddReservaDto> _reservaValidator, IValidator<UpsertHabitacionDto> _habitacionValidator): ControllerBase
+    IValidator<AddReservaDto> _reservaValidator, IValidator<UpsertHabitacionDto> _habitacionValidator) : ControllerBase
     {
         [ProducesResponseType(typeof(Unit), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(IEnumerable<ValidationFailure>), StatusCodes.Status400BadRequest)]

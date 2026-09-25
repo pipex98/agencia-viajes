@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using AgenciaViajes.Application.Commands.Habitaciones;
+using AgenciaViajes.Application.Commands.Hoteles;
+using AgenciaViajes.Application.Dto.Hotel;
+using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
-using AgenciaViajes.Application.Commands.Hotel;
-using AgenciaViajes.Application.Dto.Hotel;
-using FluentValidation.Results;
 
 namespace AgenciaViajes.API.Controllers
 {
