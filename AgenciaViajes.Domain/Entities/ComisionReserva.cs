@@ -31,7 +31,7 @@ public partial class ComisionReserva
         MontoComision = CalcularComision();
     }
 
-    public static ComisionReserva Create(decimal montoBaseReserva)
+    public static ComisionReserva Crear(decimal montoBaseReserva)
     {
         var comisionReserva = new ComisionReserva(montoBaseReserva);
 
