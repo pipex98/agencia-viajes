@@ -54,7 +54,7 @@ namespace AgenciaViajes.API.Tests
                 }
             };
 
-            var response = await _client.PostAsJsonAsync("/api/Habitaciones/ReservarHabitacion",
+            var response = await _client.PostAsJsonAsync("/api/habitaciones/reservar",
                 dto,
                 TestContext.Current.CancellationToken
             );
