@@ -34,6 +34,16 @@ public partial class DetalleReserva
         Importe = CalcularImporte();
     }
 
+    public static DetalleReserva Crear(
+        string concepto, 
+        int cantidad, 
+        decimal precioUnitario)
+    {
+        var detalleReserva = new DetalleReserva(concepto, cantidad, precioUnitario);
+
+        return detalleReserva;
+    }
+
     public decimal CalcularImporte()
     {
         return Cantidad * PrecioUnitario;
