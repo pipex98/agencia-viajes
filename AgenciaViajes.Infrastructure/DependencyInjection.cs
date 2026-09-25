@@ -39,6 +39,7 @@ namespace AgenciaViajes.Infrastructure
 
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPasswordHasherService, PasswordHasherService>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
