@@ -2,8 +2,8 @@
 {
     public class LoginDto
     {
-        public string? CorreoElectronico { get; set; }
+        public string CorreoElectronico { get; set; } = string.Empty;
 
-        public string? Contraseña { get; set; }
+        public string Contraseña { get; set; } = string.Empty;
     }
 }
