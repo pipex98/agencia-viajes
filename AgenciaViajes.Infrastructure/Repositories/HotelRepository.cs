@@ -26,14 +26,16 @@ namespace AgenciaViajes.Infrastructure.Repositories
 
         public void Crear(Hotel hotel)
         {
+            _logger.LogInformation("Agregando el objeto hotel al DbSet");
+
             dbContext.Hoteles.Add(hotel);
-            _logger.LogInformation("Creando hotel con el ID: {IdHotel}", hotel.IdHotel);
         }
 
         public void Actualizar(Hotel hotel)
         {
+            _logger.LogInformation("Marcando la entidad Hotel como modificada");
+
             dbContext.Hoteles.Update(hotel);
-            _logger.LogInformation("Actualizando hotel con el ID: {IdHotel}", hotel.IdHotel);
         }
     }
 }

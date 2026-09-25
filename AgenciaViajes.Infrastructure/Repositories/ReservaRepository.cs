@@ -11,8 +11,9 @@ namespace AgenciaViajes.Infrastructure.Repositories
     {
         public void Crear(Reserva reserva)
         {
+            logger.LogInformation("Agregando el objeto reserva al DbSet");
+
             dbContext.Reservas.Add(reserva);
-            logger.LogInformation("Creando reserva con el ID: {ID}", reserva.IdReserva);
         }
 
         public async Task<List<Reserva>> ObtenerReservasPorHuespedAsync(int id)

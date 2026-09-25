@@ -6,13 +6,14 @@ using Microsoft.Extensions.Logging;
 
 namespace AgenciaViajes.Infrastructure.Repositories
 {
-    public class HuespedRepository(AppDbContext dbContext, ILogger<HuespedRepository> _logger) 
+    public class HuespedRepository(AppDbContext dbContext, ILogger<HuespedRepository> _logger)
     : IHuespedRepository
     {
         public void Crear(Huesped huesped)
         {
+            _logger.LogInformation("Agregando el objeto huesped al DbSet");
+
             dbContext.Huespedes.Add(huesped);
-            _logger.LogInformation("Creando huesped con el ID: {IdHuesped}", huesped.IdHuesped);
         }
 
         public async Task<Huesped> ObtenerHuespedPorCorreoElectronicoAsync(string correoElectronico)
